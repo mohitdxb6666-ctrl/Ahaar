@@ -7,133 +7,138 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.ChatBubble
-import androidx.compose.material.icons.filled.RestaurantMenu
-import androidx.compose.material.icons.filled.Today
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.TrendingUp
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.ui.AppScreen
 import com.example.ui.MainViewModel
-import com.example.ui.screens.AiDietitianChatScreen
 import com.example.ui.screens.AiNutritionLabScreen
+import com.example.ui.screens.AnalyticsScreen
+import com.example.ui.screens.ClickToKnowCaloriesScreen
 import com.example.ui.screens.DashboardScreen
 import com.example.ui.screens.FoodSearchScreen
-import com.example.ui.screens.ProgressAndAnalyticsScreen
 import com.example.ui.theme.AhaarTheme
-import com.example.ui.theme.SaffronPrimary
-
-enum class AhaarNavTab(
-    val title: String,
-    val subtitle: String,
-    val icon: ImageVector,
-    val testTag: String
-) {
-    DASHBOARD("Aaj", "Diary", Icons.Default.Today, "tab_dashboard"),
-    FOODS("Khana", "Foods", Icons.Default.RestaurantMenu, "tab_foods"),
-    AI_SCANNER("AI Lab", "Scan", Icons.Default.AutoAwesome, "tab_ai_scanner"),
-    AI_COACH("Dr. Ahaar", "Coach", Icons.Default.ChatBubble, "tab_ai_coach"),
-    INSIGHTS("Pragati", "Insights", Icons.Default.Analytics, "tab_insights")
-}
 
 class MainActivity : ComponentActivity() {
+
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             AhaarTheme {
-                MainAppContent(viewModel = viewModel)
+                AhaarApp(viewModel = viewModel)
             }
         }
     }
 }
 
 @Composable
-fun MainAppContent(viewModel: MainViewModel) {
-    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+fun AhaarApp(viewModel: MainViewModel) {
+    val currentScreen by viewModel.currentScreen.collectAsState()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = 8.dp
+                tonalElevation = 4.dp,
+                modifier = Modifier.testTag("main_bottom_nav")
             ) {
-                AhaarNavTab.values().forEachIndexed { index, tab ->
-                    val isSelected = selectedTabIndex == index
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = { selectedTabIndex = index },
-                        icon = {
-                            Icon(
-                                imageVector = tab.icon,
-                                contentDescription = tab.title,
-                                modifier = Modifier.size(22.dp)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = tab.title,
-                                fontSize = 11.sp,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = SaffronPrimary,
-                            selectedTextColor = SaffronPrimary,
-                            indicatorColor = SaffronPrimary.copy(alpha = 0.15f)
-                        ),
-                        modifier = Modifier.testTag(tab.testTag)
-                    )
-                }
+                NavigationBarItem(
+                    selected = currentScreen == AppScreen.DASHBOARD,
+                    onClick = { viewModel.navigateTo(AppScreen.DASHBOARD) },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentScreen == AppScreen.DASHBOARD) Icons.Filled.DateRange else Icons.Outlined.DateRange,
+                            contentDescription = "Diary"
+                        )
+                    },
+                    label = { Text("Diary") },
+                    modifier = Modifier.testTag("nav_diary")
+                )
+
+                NavigationBarItem(
+                    selected = currentScreen == AppScreen.CLICK_TO_KNOW_CALORIES,
+                    onClick = { viewModel.navigateTo(AppScreen.CLICK_TO_KNOW_CALORIES) },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentScreen == AppScreen.CLICK_TO_KNOW_CALORIES) Icons.Filled.CameraAlt else Icons.Outlined.CameraAlt,
+                            contentDescription = "Click to know calories"
+                        )
+                    },
+                    label = { Text("Calories") },
+                    modifier = Modifier.testTag("nav_click_to_know_calories")
+                )
+
+                NavigationBarItem(
+                    selected = currentScreen == AppScreen.FOOD_SEARCH,
+                    onClick = { viewModel.navigateTo(AppScreen.FOOD_SEARCH) },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentScreen == AppScreen.FOOD_SEARCH) Icons.Filled.Search else Icons.Outlined.Search,
+                            contentDescription = "Search"
+                        )
+                    },
+                    label = { Text("Search") },
+                    modifier = Modifier.testTag("nav_search")
+                )
+
+                NavigationBarItem(
+                    selected = currentScreen == AppScreen.AI_LAB,
+                    onClick = { viewModel.navigateTo(AppScreen.AI_LAB) },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentScreen == AppScreen.AI_LAB) Icons.Filled.AutoAwesome else Icons.Outlined.AutoAwesome,
+                            contentDescription = "AI Lab"
+                        )
+                    },
+                    label = { Text("AI Lab") },
+                    modifier = Modifier.testTag("nav_ai_lab")
+                )
+
+                NavigationBarItem(
+                    selected = currentScreen == AppScreen.ANALYTICS,
+                    onClick = { viewModel.navigateTo(AppScreen.ANALYTICS) },
+                    icon = {
+                        Icon(
+                            imageVector = if (currentScreen == AppScreen.ANALYTICS) Icons.Filled.TrendingUp else Icons.Outlined.TrendingUp,
+                            contentDescription = "Insights"
+                        )
+                    },
+                    label = { Text("Insights") },
+                    modifier = Modifier.testTag("nav_insights")
+                )
             }
         }
     ) { innerPadding ->
-        androidx.compose.foundation.layout.Box(
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            color = MaterialTheme.colorScheme.background
         ) {
-            when (selectedTabIndex) {
-                0 -> DashboardScreen(
-                    viewModel = viewModel,
-                    onNavigateToFoodSearch = { selectedTabIndex = 1 },
-                    onNavigateToAiScanner = { selectedTabIndex = 2 }
-                )
-                1 -> FoodSearchScreen(
-                    viewModel = viewModel,
-                    onFoodLogged = { selectedTabIndex = 0 }
-                )
-                2 -> AiNutritionLabScreen(
-                    viewModel = viewModel,
-                    onLogsCompleted = { selectedTabIndex = 0 }
-                )
-                3 -> AiDietitianChatScreen(
-                    viewModel = viewModel
-                )
-                4 -> ProgressAndAnalyticsScreen(
-                    viewModel = viewModel
-                )
+            when (currentScreen) {
+                AppScreen.DASHBOARD -> DashboardScreen(viewModel = viewModel)
+                AppScreen.CLICK_TO_KNOW_CALORIES -> ClickToKnowCaloriesScreen(viewModel = viewModel)
+                AppScreen.FOOD_SEARCH -> FoodSearchScreen(viewModel = viewModel)
+                AppScreen.AI_LAB -> AiNutritionLabScreen(viewModel = viewModel)
+                AppScreen.ANALYTICS -> AnalyticsScreen(viewModel = viewModel)
             }
         }
     }

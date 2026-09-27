@@ -4,27 +4,16 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Bowl Base -->
+    <!-- Golden circular plate / halo ring -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M28,54 C28,68.36 39.64,80 54,80 C68.36,80 80,68.36 80,54 L28,54 Z" />
-    <!-- Bowl Rim / Stand -->
+        android:fillColor="#FBBF24"
+        android:pathData="M54,26 C69.46,26 82,38.54 82,54 C82,69.46 69.46,82 54,82 C38.54,82 26,69.46 26,54 C26,38.54 38.54,26 54,26 Z M54,32 C41.85,32 32,41.85 32,54 C32,66.15 41.85,76 54,76 C66.15,76 76,66.15 76,54 C76,41.85 66.15,32 54,32 Z" />
+    <!-- Vibrant green organic leaf / sprout for nutrition & Ayurveda inside the plate -->
     <path
-        android:fillColor="#FFF8E1"
-        android:pathData="M44,80 L64,80 L66,84 L42,84 Z" />
-    <!-- Food Glow / Leaf / Energy Flame inside Bowl -->
+        android:fillColor="#A7F3D0"
+        android:pathData="M54,36 C54,36 68,42 68,56 C68,64 61.5,70 54,72 C46.5,70 40,64 40,56 C40,42 54,36 54,36 Z" />
+    <!-- Center golden grain / flame -->
     <path
-        android:fillColor="#FFE082"
-        android:pathData="M54,26 C54,26 62,36 62,44 C62,48.42 58.42,52 54,52 C49.58,52 46,48.42 46,44 C46,36 54,26 54,26 Z" />
-    <path
-        android:fillColor="#81C784"
-        android:pathData="M40,36 C45,34 50,38 49,46 C44,46 38,42 40,36 Z" />
-    <path
-        android:fillColor="#81C784"
-        android:pathData="M68,36 C63,34 58,38 59,46 C64,46 70,42 68,36 Z" />
-    <!-- Center Spark / Diamond Star -->
-    <path
-        android:fillColor="#FF6F00"
-        android:pathData="M54,39 L56,43 L60,45 L56,47 L54,51 L52,47 L48,45 L52,43 Z" />
+        android:fillColor="#F59E0B"
+        android:pathData="M54,46 C57,51 60,56 60,60 C60,63.3 57.3,66 54,66 C50.7,66 48,63.3 48,60 C48,56 51,51 54,46 Z" />
 </vector>
-

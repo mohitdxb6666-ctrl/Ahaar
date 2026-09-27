@@ -1,26 +1,20 @@
-package com.example.data.local
+package com.example.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.data.model.CustomFoodEntity
-import com.example.data.model.DailyTargetEntity
-import com.example.data.model.MealLogEntity
+import com.example.data.model.MealEntry
+import com.example.data.model.WaterEntry
 
 @Database(
-    entities = [
-        MealLogEntity::class,
-        DailyTargetEntity::class,
-        CustomFoodEntity::class
-    ],
+    entities = [MealEntry::class, WaterEntry::class],
     version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun mealLogDao(): MealLogDao
-    abstract fun dailyTargetDao(): DailyTargetDao
-    abstract fun customFoodDao(): CustomFoodDao
+    abstract fun mealEntryDao(): MealEntryDao
+    abstract fun waterDao(): WaterDao
 
     companion object {
         @Volatile
@@ -31,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "ahaar_calorie_tracker.db"
+                    "ahaar_database"
                 ).build()
                 INSTANCE = instance
                 instance
