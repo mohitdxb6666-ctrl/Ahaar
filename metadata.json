@@ -1,0 +1,7 @@
+{
+  "name": "Ahaar",
+  "description": "World's best calorie and macro tracking app tailored for authentic regional Indian cuisine and global health goals with Gemini AI nutrition intelligence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
